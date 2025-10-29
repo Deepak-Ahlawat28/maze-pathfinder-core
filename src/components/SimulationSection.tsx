@@ -53,15 +53,15 @@ export const SimulationSection = () => {
       p => p.row === row && p.col === col
     );
 
-    if (cell.isStart) return "bg-lime rounded-full shadow-lg shadow-lime/50";
-    if (cell.isEnd) return "bg-accent rounded-full shadow-lg shadow-accent/50";
-    if (isInPath) return "bg-accent animate-glow";
+    if (cell.isStart) return "bg-lime rounded-full shadow-md shadow-lime/40 ring-2 ring-lime/40";
+    if (cell.isEnd) return "bg-accent rounded-full shadow-md shadow-accent/40 ring-2 ring-accent/40";
+    if (isInPath) return "bg-accent/90 animate-glow shadow-sm";
     if (cell.isWall) return "bg-muted/50";
-    return "bg-card/30 border border-border/30";
+    return "bg-card/60 border border-border/50 hover:shadow-sm transition-smooth";
   };
 
   return (
-    <section id="simulation" className="py-24 px-6 relative">
+    <section id="simulation" className="py-24 px-6 relative animate-fade-in">
       <div className="container mx-auto max-w-7xl">
         <div className="text-center mb-16">
           <h2 className="text-4xl md:text-5xl font-bold mb-4 text-gradient">
@@ -73,13 +73,13 @@ export const SimulationSection = () => {
           </p>
         </div>
 
-        <Card className="p-6 md:p-10 border-border bg-card/50 backdrop-blur-sm">
+        <Card className="p-8 md:p-12 border-border/60 bg-card/70 backdrop-blur-md shadow-xl rounded-3xl">
           <div className="flex flex-col md:flex-row gap-4 justify-center items-center mb-8">
             <Button
               size="lg"
               onClick={handleSimulation}
               disabled={isPlaying || maze.length === 0}
-              className="bg-lime hover:bg-lime/90 text-lime-foreground font-semibold px-8 glow-lime transition-smooth"
+              className="bg-lime hover:bg-lime/90 text-lime-foreground font-semibold px-8 glow-lime transition-smooth hover-pop"
             >
               <Play className="mr-2" />
               {isPlaying ? "Solving..." : "Run Simulation"}
@@ -90,7 +90,7 @@ export const SimulationSection = () => {
               variant="outline"
               onClick={generateNewMaze}
               disabled={isPlaying}
-              className="border-accent text-accent hover:bg-accent/10 font-semibold px-8 transition-smooth"
+              className="border-accent text-accent hover:bg-accent/10 font-semibold px-8 transition-smooth hover-pop"
             >
               <RefreshCw className="mr-2" />
               Generate New Maze
@@ -98,16 +98,16 @@ export const SimulationSection = () => {
           </div>
 
           {/* Maze Grid Visualization */}
-          <div className="relative aspect-square max-w-3xl mx-auto bg-background/80 rounded-xl p-4 border-2 border-accent/30 shadow-2xl">
+          <div className="relative aspect-square max-w-3xl mx-auto bg-white/70 dark:bg-background/80 rounded-3xl p-5 border border-border/60 shadow-2xl frosted">
             <div 
-              className="grid gap-1 h-full w-full"
+              className="grid gap-1.5 h-full w-full"
               style={{ gridTemplateColumns: `repeat(${MAZE_SIZE}, 1fr)` }}
             >
               {maze.map((row, rowIndex) =>
                 row.map((_, colIndex) => (
                   <div
                     key={`${rowIndex}-${colIndex}`}
-                    className={`rounded transition-all duration-300 ${getCellStyle(rowIndex, colIndex)}`}
+                    className={`rounded-md md:rounded-lg transition-all duration-300 ${getCellStyle(rowIndex, colIndex)}`}
                   />
                 ))
               )}

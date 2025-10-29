@@ -15,7 +15,7 @@ export const HeroSection = () => {
         className="absolute inset-0 bg-cover bg-center"
         style={{ backgroundImage: `url(${heroMaze})` }}
       >
-        <div className="absolute inset-0 bg-background/90" />
+        <div className="absolute inset-0 bg-gradient-to-br from-white/80 to-white/40 dark:from-background/90 dark:to-background/60 backdrop-blur-xl" />
       </div>
 
       {/* Animated Grid Overlay */}
@@ -48,7 +48,7 @@ export const HeroSection = () => {
             <Button 
               size="lg" 
               onClick={scrollToNext}
-              className="bg-accent hover:bg-accent/90 text-accent-foreground font-semibold px-10 py-7 text-xl transition-smooth glow-cyan shadow-xl"
+              className="bg-accent hover:bg-accent/90 text-accent-foreground font-semibold px-10 py-7 text-xl transition-smooth glow-cyan shadow-xl hover-pop"
             >
               Explore Project
               <ArrowDown className="ml-3 h-6 w-6" />
