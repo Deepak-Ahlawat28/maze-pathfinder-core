@@ -33,15 +33,15 @@ export const HeroSection = () => {
       <div className="relative z-10 container mx-auto px-6 text-center animate-fade-in">
         <div className="max-w-6xl mx-auto space-y-10">
           <h1 className="text-6xl md:text-8xl font-bold leading-tight tracking-tight">
-            <span className="text-gradient block mb-4">Maze Solving Using</span>
-            <span className="text-foreground block mb-4">Recursive Backtracking</span>
-            <span className="text-muted-foreground text-4xl md:text-6xl block">in Java 17</span>
+            <span className="text-gradient block mb-4">Maze Pathfinding</span>
+            <span className="text-foreground block mb-4">DFS vs BFS vs A*</span>
+            <span className="text-muted-foreground text-4xl md:text-6xl block">Visual Comparison & Insights</span>
           </h1>
           
           <p className="text-2xl md:text-3xl text-muted-foreground max-w-4xl mx-auto leading-relaxed">
-            A comprehensive study and implementation of maze solving through 
-            <span className="text-accent font-semibold"> Depth-First Search</span> and 
-            <span className="text-lime font-semibold"> Backtracking</span>
+            Explore how <span className="text-accent font-semibold">DFS</span>, 
+            <span className="text-lime font-semibold"> BFS</span>, and 
+            <span className="text-primary font-semibold"> A*</span> differ in path optimality, memory, and performance
           </p>
 
           <div className="flex gap-6 justify-center items-center pt-12">

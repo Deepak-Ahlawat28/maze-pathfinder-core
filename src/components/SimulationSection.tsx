@@ -2,7 +2,7 @@ import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Play, RefreshCw } from "lucide-react";
 import { useState, useEffect } from "react";
-import { generateMaze, solveMaze, type MazeGrid } from "@/utils/mazeGenerator";
+import { generateMaze, solveMazeWithSteps, type MazeGrid, type Algorithm } from "@/utils/mazeGenerator";
 
 export const SimulationSection = () => {
   const MAZE_SIZE = 15; // Odd number for better maze generation
@@ -10,6 +10,9 @@ export const SimulationSection = () => {
   const [isPlaying, setIsPlaying] = useState(false);
   const [pathIndex, setPathIndex] = useState(0);
   const [solvedPath, setSolvedPath] = useState<{ row: number; col: number }[]>([]);
+  const [algorithm, setAlgorithm] = useState<Algorithm>("DFS");
+  const [visitedIndex, setVisitedIndex] = useState(0);
+  const [visitedOrder, setVisitedOrder] = useState<{ row: number; col: number }[]>([]);
 
   // Generate initial maze
   useEffect(() => {
@@ -22,26 +25,37 @@ export const SimulationSection = () => {
     setPathIndex(0);
     setSolvedPath([]);
     setIsPlaying(false);
+    setVisitedIndex(0);
+    setVisitedOrder([]);
   };
 
   const handleSimulation = () => {
     if (isPlaying) return;
     
     setIsPlaying(true);
-    const path = solveMaze(maze);
+    const { visitedOrder, path } = solveMazeWithSteps(maze, algorithm);
+    setVisitedOrder(visitedOrder);
     setSolvedPath(path.map(cell => ({ row: cell.row, col: cell.col })));
-    
-    // Animate the path
-    let index = 0;
-    const interval = setInterval(() => {
-      index++;
-      setPathIndex(index);
-      
-      if (index >= path.length) {
-        clearInterval(interval);
-        setTimeout(() => setIsPlaying(false), 500);
+
+    // Phase 1: animate exploration
+    let vIndex = 0;
+    const visitInterval = setInterval(() => {
+      vIndex++;
+      setVisitedIndex(vIndex);
+      if (vIndex >= visitedOrder.length) {
+        clearInterval(visitInterval);
+        // Phase 2: animate final path
+        let pIndex = 0;
+        const pathInterval = setInterval(() => {
+          pIndex++;
+          setPathIndex(pIndex);
+          if (pIndex >= path.length) {
+            clearInterval(pathInterval);
+            setTimeout(() => setIsPlaying(false), 500);
+          }
+        }, 40);
       }
-    }, 50);
+    }, 12);
   };
 
   const getCellStyle = (row: number, col: number) => {
@@ -52,10 +66,15 @@ export const SimulationSection = () => {
     const isInPath = solvedPath.slice(0, pathIndex).some(
       p => p.row === row && p.col === col
     );
+    // Check if cell was visited during exploration
+    const isVisited = visitedOrder.slice(0, visitedIndex).some(
+      v => v.row === row && v.col === col
+    );
 
     if (cell.isStart) return "bg-lime rounded-full shadow-md shadow-lime/40 ring-2 ring-lime/40";
     if (cell.isEnd) return "bg-accent rounded-full shadow-md shadow-accent/40 ring-2 ring-accent/40";
     if (isInPath) return "bg-accent/90 animate-glow shadow-sm";
+    if (isVisited) return "bg-primary/40 border border-primary/40";
     if (cell.isWall) return "bg-muted/50";
     return "bg-card/60 border border-border/50 hover:shadow-sm transition-smooth";
   };
@@ -69,12 +88,38 @@ export const SimulationSection = () => {
           </h2>
           <div className="w-24 h-1 bg-accent mx-auto mb-6" />
           <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
-            Watch the recursive backtracking algorithm navigate through a dynamically generated maze
+            Compare DFS, BFS, and A* as they navigate a dynamically generated maze
           </p>
         </div>
 
         <Card className="p-8 md:p-12 border-border/60 bg-card/70 backdrop-blur-md shadow-xl rounded-3xl">
-          <div className="flex flex-col md:flex-row gap-4 justify-center items-center mb-8">
+          <div className="flex flex-col md:flex-row gap-4 justify-center items-center mb-6">
+            <div className="flex gap-2 mb-2 md:mb-0">
+              <Button
+                variant={algorithm === "DFS" ? "default" : "outline"}
+                className={algorithm === "DFS" ? "bg-accent text-accent-foreground" : ""}
+                onClick={() => setAlgorithm("DFS")}
+                disabled={isPlaying}
+              >
+                DFS
+              </Button>
+              <Button
+                variant={algorithm === "BFS" ? "default" : "outline"}
+                className={algorithm === "BFS" ? "bg-lime text-lime-foreground" : ""}
+                onClick={() => setAlgorithm("BFS")}
+                disabled={isPlaying}
+              >
+                BFS
+              </Button>
+              <Button
+                variant={algorithm === "ASTAR" ? "default" : "outline"}
+                className={algorithm === "ASTAR" ? "bg-primary text-primary-foreground" : ""}
+                onClick={() => setAlgorithm("ASTAR")}
+                disabled={isPlaying}
+              >
+                A*
+              </Button>
+            </div>
             <Button
               size="lg"
               onClick={handleSimulation}
@@ -129,7 +174,7 @@ export const SimulationSection = () => {
             </div>
             <div className="p-4 rounded-lg bg-background/50 border border-border">
               <div className="text-3xl font-bold text-accent mb-1">{solvedPath.length}</div>
-              <div className="text-sm text-muted-foreground">Path Length</div>
+              <div className="text-sm text-muted-foreground">Path Length ({algorithm})</div>
             </div>
           </div>
 

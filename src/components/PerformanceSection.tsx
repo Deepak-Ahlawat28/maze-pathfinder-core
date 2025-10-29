@@ -14,26 +14,31 @@ export const PerformanceSection = () => {
       metric: "Time Complexity",
       dfs: "O(V + E)",
       bfs: "O(V + E)",
+      astar: "O(E) average, O(E) worst with good heuristic",
     },
     {
       metric: "Space Complexity",
       dfs: "O(V)",
       bfs: "O(V)",
+      astar: "O(V)",
     },
     {
       metric: "Memory Efficiency",
       dfs: "Lower (call stack)",
       bfs: "Higher (queue)",
+      astar: "Moderate to High (priority queue, scores)",
     },
     {
       metric: "Path Type",
       dfs: "Any valid path",
       bfs: "Shortest path",
+      astar: "Shortest path (with admissible heuristic)",
     },
     {
       metric: "Completeness",
       dfs: "Yes (with visited)",
       bfs: "Yes",
+      astar: "Yes",
     },
   ];
 
@@ -49,7 +54,7 @@ export const PerformanceSection = () => {
 
         <Card className="p-10 border-border bg-card/50 backdrop-blur-sm overflow-hidden shadow-2xl">
           <h3 className="text-3xl font-semibold mb-10 text-center">
-            DFS Backtracking vs BFS Comparison
+            DFS vs BFS vs A* Comparison
           </h3>
           
           <div className="overflow-x-auto">
@@ -59,6 +64,7 @@ export const PerformanceSection = () => {
                   <TableHead className="text-accent font-semibold text-base">Metric</TableHead>
                   <TableHead className="text-accent font-semibold text-base">DFS (Backtracking)</TableHead>
                   <TableHead className="text-lime font-semibold text-base">BFS</TableHead>
+                  <TableHead className="text-primary font-semibold text-base">A*</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
@@ -67,6 +73,7 @@ export const PerformanceSection = () => {
                     <TableCell className="font-medium">{row.metric}</TableCell>
                     <TableCell className="text-muted-foreground">{row.dfs}</TableCell>
                     <TableCell className="text-muted-foreground">{row.bfs}</TableCell>
+                    <TableCell className="text-muted-foreground">{row.astar}</TableCell>
                   </TableRow>
                 ))}
               </TableBody>
