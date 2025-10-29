@@ -9,29 +9,29 @@ export const AbstractSection = () => {
   ];
 
   return (
-    <section id="abstract" className="py-24 px-6 relative">
-      <div className="container mx-auto max-w-6xl">
-        <div className="text-center mb-16 animate-slide-up">
-          <h2 className="text-4xl md:text-5xl font-bold mb-4 text-gradient">
+    <section id="abstract" className="py-32 px-6 relative">
+      <div className="container mx-auto max-w-7xl">
+        <div className="text-center mb-20 animate-slide-up">
+          <h2 className="text-5xl md:text-6xl font-bold mb-6 text-gradient">
             Abstract
           </h2>
-          <div className="w-24 h-1 bg-accent mx-auto" />
+          <div className="w-32 h-1.5 bg-gradient-accent mx-auto rounded-full" />
         </div>
 
-        <div className="grid md:grid-cols-3 gap-6 mb-12">
+        <div className="grid md:grid-cols-3 gap-8 mb-16">
           {icons.map(({ Icon, label, color }) => (
             <Card 
               key={label}
-              className="p-6 text-center border-border bg-card/50 backdrop-blur-sm hover:border-accent transition-smooth hover:glow-cyan"
+              className="p-8 text-center border-border bg-card/50 backdrop-blur-sm hover:border-accent transition-smooth hover:glow-cyan group"
             >
-              <Icon className={`w-12 h-12 mx-auto mb-3 ${color}`} />
-              <h3 className="font-semibold text-lg">{label}</h3>
+              <Icon className={`w-16 h-16 mx-auto mb-4 ${color} group-hover:scale-110 transition-smooth`} />
+              <h3 className="font-semibold text-xl">{label}</h3>
             </Card>
           ))}
         </div>
 
-        <Card className="p-8 md:p-12 border-border bg-card/50 backdrop-blur-sm">
-          <p className="text-lg leading-relaxed text-muted-foreground">
+        <Card className="p-10 md:p-16 border-border bg-card/50 backdrop-blur-sm shadow-2xl">
+          <p className="text-xl leading-relaxed text-muted-foreground">
             This study presents a <span className="text-accent font-semibold">comprehensive analysis</span> of solving maze puzzles using the 
             recursive backtracking algorithm, a form of <span className="text-lime font-semibold">depth-first search (DFS)</span>, 
             implemented in <span className="text-primary font-semibold">Java 17</span>. We model a maze as a 2D grid, which implicitly 

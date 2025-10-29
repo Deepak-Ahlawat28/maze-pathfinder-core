@@ -1,85 +1,154 @@
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Play } from "lucide-react";
-import { useState } from "react";
+import { Play, RefreshCw } from "lucide-react";
+import { useState, useEffect } from "react";
+import { generateMaze, solveMaze, type MazeGrid } from "@/utils/mazeGenerator";
 
 export const SimulationSection = () => {
+  const MAZE_SIZE = 15; // Odd number for better maze generation
+  const [maze, setMaze] = useState<MazeGrid>([]);
   const [isPlaying, setIsPlaying] = useState(false);
+  const [pathIndex, setPathIndex] = useState(0);
+  const [solvedPath, setSolvedPath] = useState<{ row: number; col: number }[]>([]);
+
+  // Generate initial maze
+  useEffect(() => {
+    generateNewMaze();
+  }, []);
+
+  const generateNewMaze = () => {
+    const newMaze = generateMaze(MAZE_SIZE, MAZE_SIZE);
+    setMaze(newMaze);
+    setPathIndex(0);
+    setSolvedPath([]);
+    setIsPlaying(false);
+  };
 
   const handleSimulation = () => {
+    if (isPlaying) return;
+    
     setIsPlaying(true);
-    setTimeout(() => setIsPlaying(false), 3000);
+    const path = solveMaze(maze);
+    setSolvedPath(path.map(cell => ({ row: cell.row, col: cell.col })));
+    
+    // Animate the path
+    let index = 0;
+    const interval = setInterval(() => {
+      index++;
+      setPathIndex(index);
+      
+      if (index >= path.length) {
+        clearInterval(interval);
+        setTimeout(() => setIsPlaying(false), 500);
+      }
+    }, 50);
+  };
+
+  const getCellStyle = (row: number, col: number) => {
+    const cell = maze[row]?.[col];
+    if (!cell) return "bg-card border border-border";
+
+    // Check if cell is in the animated path
+    const isInPath = solvedPath.slice(0, pathIndex).some(
+      p => p.row === row && p.col === col
+    );
+
+    if (cell.isStart) return "bg-lime rounded-full shadow-lg shadow-lime/50";
+    if (cell.isEnd) return "bg-accent rounded-full shadow-lg shadow-accent/50";
+    if (isInPath) return "bg-accent animate-glow";
+    if (cell.isWall) return "bg-muted/50";
+    return "bg-card/30 border border-border/30";
   };
 
   return (
-    <section className="py-24 px-6 relative">
-      <div className="container mx-auto max-w-6xl">
+    <section id="simulation" className="py-24 px-6 relative">
+      <div className="container mx-auto max-w-7xl">
         <div className="text-center mb-16">
           <h2 className="text-4xl md:text-5xl font-bold mb-4 text-gradient">
             Interactive Simulation
           </h2>
-          <div className="w-24 h-1 bg-accent mx-auto" />
+          <div className="w-24 h-1 bg-accent mx-auto mb-6" />
+          <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
+            Watch the recursive backtracking algorithm navigate through a dynamically generated maze
+          </p>
         </div>
 
-        <Card className="p-8 md:p-12 border-border bg-card/50 backdrop-blur-sm">
-          <div className="text-center mb-8">
-            <p className="text-xl text-muted-foreground mb-6">
-              Visualize the pathfinding process in real-time
-            </p>
+        <Card className="p-6 md:p-10 border-border bg-card/50 backdrop-blur-sm">
+          <div className="flex flex-col md:flex-row gap-4 justify-center items-center mb-8">
             <Button
               size="lg"
               onClick={handleSimulation}
-              disabled={isPlaying}
+              disabled={isPlaying || maze.length === 0}
               className="bg-lime hover:bg-lime/90 text-lime-foreground font-semibold px-8 glow-lime transition-smooth"
             >
               <Play className="mr-2" />
-              {isPlaying ? "Running Simulation..." : "Run Simulation"}
+              {isPlaying ? "Solving..." : "Run Simulation"}
+            </Button>
+            
+            <Button
+              size="lg"
+              variant="outline"
+              onClick={generateNewMaze}
+              disabled={isPlaying}
+              className="border-accent text-accent hover:bg-accent/10 font-semibold px-8 transition-smooth"
+            >
+              <RefreshCw className="mr-2" />
+              Generate New Maze
             </Button>
           </div>
 
           {/* Maze Grid Visualization */}
-          <div className="relative aspect-square max-w-2xl mx-auto bg-background/50 rounded-lg p-4 border-2 border-border">
-            <div className="grid grid-cols-8 gap-1 h-full">
-              {Array.from({ length: 64 }).map((_, i) => {
-                const isPath = isPlaying && (i === 0 || i === 63 || i % 9 === 0);
-                const isWall = !isPlaying && (i === 10 || i === 18 || i === 26 || i === 34 || i === 42 || i === 50);
-                
-                return (
+          <div className="relative aspect-square max-w-3xl mx-auto bg-background/80 rounded-xl p-4 border-2 border-accent/30 shadow-2xl">
+            <div 
+              className="grid gap-1 h-full w-full"
+              style={{ gridTemplateColumns: `repeat(${MAZE_SIZE}, 1fr)` }}
+            >
+              {maze.map((row, rowIndex) =>
+                row.map((_, colIndex) => (
                   <div
-                    key={i}
-                    className={`rounded transition-smooth ${
-                      isPath 
-                        ? 'bg-accent animate-glow' 
-                        : isWall 
-                        ? 'bg-muted' 
-                        : 'bg-card border border-border'
-                    }`}
+                    key={`${rowIndex}-${colIndex}`}
+                    className={`rounded transition-all duration-300 ${getCellStyle(rowIndex, colIndex)}`}
                   />
-                );
-              })}
-            </div>
-            
-            {/* Start and End markers */}
-            <div className="absolute top-6 left-6 w-8 h-8 bg-lime rounded-full flex items-center justify-center text-xs font-bold">
-              S
-            </div>
-            <div className="absolute bottom-6 right-6 w-8 h-8 bg-accent rounded-full flex items-center justify-center text-xs font-bold">
-              E
+                ))
+              )}
             </div>
           </div>
 
-          <div className="mt-8 grid md:grid-cols-3 gap-4 text-center">
-            <div>
-              <div className="text-3xl font-bold text-accent">O(V+E)</div>
-              <div className="text-sm text-muted-foreground mt-1">Time Complexity</div>
+          <div className="mt-10 grid md:grid-cols-4 gap-6 text-center">
+            <div className="p-4 rounded-lg bg-background/50 border border-border">
+              <div className="text-3xl font-bold text-accent mb-1">O(V+E)</div>
+              <div className="text-sm text-muted-foreground">Time Complexity</div>
             </div>
-            <div>
-              <div className="text-3xl font-bold text-lime">O(V)</div>
-              <div className="text-sm text-muted-foreground mt-1">Space Complexity</div>
+            <div className="p-4 rounded-lg bg-background/50 border border-border">
+              <div className="text-3xl font-bold text-lime mb-1">O(V)</div>
+              <div className="text-sm text-muted-foreground">Space Complexity</div>
             </div>
-            <div>
-              <div className="text-3xl font-bold text-primary">DFS</div>
-              <div className="text-sm text-muted-foreground mt-1">Algorithm Type</div>
+            <div className="p-4 rounded-lg bg-background/50 border border-border">
+              <div className="text-3xl font-bold text-primary mb-1">{MAZE_SIZE}×{MAZE_SIZE}</div>
+              <div className="text-sm text-muted-foreground">Grid Size</div>
+            </div>
+            <div className="p-4 rounded-lg bg-background/50 border border-border">
+              <div className="text-3xl font-bold text-accent mb-1">{solvedPath.length}</div>
+              <div className="text-sm text-muted-foreground">Path Length</div>
+            </div>
+          </div>
+
+          <div className="mt-8 flex items-center justify-center gap-6 text-sm">
+            <div className="flex items-center gap-2">
+              <div className="w-6 h-6 bg-lime rounded-full shadow-lg shadow-lime/50" />
+              <span className="text-muted-foreground">Start</span>
+            </div>
+            <div className="flex items-center gap-2">
+              <div className="w-6 h-6 bg-accent rounded-full shadow-lg shadow-accent/50" />
+              <span className="text-muted-foreground">End</span>
+            </div>
+            <div className="flex items-center gap-2">
+              <div className="w-6 h-6 bg-muted/50 rounded" />
+              <span className="text-muted-foreground">Wall</span>
+            </div>
+            <div className="flex items-center gap-2">
+              <div className="w-6 h-6 bg-accent rounded animate-glow" />
+              <span className="text-muted-foreground">Solution Path</span>
             </div>
           </div>
         </Card>

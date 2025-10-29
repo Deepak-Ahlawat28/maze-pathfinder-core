@@ -17,49 +17,49 @@ export const ConclusionSection = () => {
   ];
 
   return (
-    <section className="py-24 px-6 relative">
-      <div className="container mx-auto max-w-6xl">
-        <div className="text-center mb-16">
-          <h2 className="text-4xl md:text-5xl font-bold mb-4 text-gradient">
+    <section className="py-32 px-6 relative">
+      <div className="container mx-auto max-w-7xl">
+        <div className="text-center mb-20">
+          <h2 className="text-5xl md:text-6xl font-bold mb-6 text-gradient">
             Conclusion
           </h2>
-          <div className="w-24 h-1 bg-accent mx-auto" />
+          <div className="w-32 h-1.5 bg-gradient-accent mx-auto rounded-full" />
         </div>
 
-        <div className="grid md:grid-cols-2 gap-8">
-          <Card className="p-8 border-border bg-card/50 backdrop-blur-sm">
-            <div className="flex items-center gap-3 mb-6">
-              <CheckCircle className="w-8 h-8 text-accent" />
-              <h3 className="text-2xl font-semibold">Key Advantages</h3>
+        <div className="grid md:grid-cols-2 gap-10">
+          <Card className="p-10 border-border bg-card/50 backdrop-blur-sm shadow-xl">
+            <div className="flex items-center gap-4 mb-8">
+              <CheckCircle className="w-10 h-10 text-accent" />
+              <h3 className="text-3xl font-semibold">Key Advantages</h3>
             </div>
-            <ul className="space-y-4">
+            <ul className="space-y-5">
               {advantages.map((advantage, index) => (
-                <li key={index} className="flex items-start gap-3">
-                  <span className="text-accent mt-1 text-xl">✓</span>
-                  <span className="text-muted-foreground">{advantage}</span>
+                <li key={index} className="flex items-start gap-4">
+                  <span className="text-accent mt-1 text-2xl">✓</span>
+                  <span className="text-muted-foreground text-lg">{advantage}</span>
                 </li>
               ))}
             </ul>
           </Card>
 
-          <Card className="p-8 border-border bg-card/50 backdrop-blur-sm">
-            <div className="flex items-center gap-3 mb-6">
-              <Lightbulb className="w-8 h-8 text-lime" />
-              <h3 className="text-2xl font-semibold">Future Work</h3>
+          <Card className="p-10 border-border bg-card/50 backdrop-blur-sm shadow-xl">
+            <div className="flex items-center gap-4 mb-8">
+              <Lightbulb className="w-10 h-10 text-lime" />
+              <h3 className="text-3xl font-semibold">Future Work</h3>
             </div>
-            <ul className="space-y-4">
+            <ul className="space-y-5">
               {futureWork.map((work, index) => (
-                <li key={index} className="flex items-start gap-3">
-                  <span className="text-lime mt-1 text-xl">▸</span>
-                  <span className="text-muted-foreground">{work}</span>
+                <li key={index} className="flex items-start gap-4">
+                  <span className="text-lime mt-1 text-2xl">▸</span>
+                  <span className="text-muted-foreground text-lg">{work}</span>
                 </li>
               ))}
             </ul>
           </Card>
         </div>
 
-        <Card className="mt-8 p-8 border-border bg-card/50 backdrop-blur-sm">
-          <p className="text-lg text-center text-muted-foreground leading-relaxed">
+        <Card className="mt-12 p-12 border-border bg-card/50 backdrop-blur-sm shadow-2xl">
+          <p className="text-xl text-center text-muted-foreground leading-relaxed">
             This research demonstrates that <span className="text-accent font-semibold">recursive backtracking</span> provides 
             an elegant and efficient solution for maze-solving problems. By leveraging the natural properties of 
             <span className="text-lime font-semibold"> depth-first search</span> and the power of 

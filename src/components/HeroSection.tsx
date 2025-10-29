@@ -31,28 +31,27 @@ export const HeroSection = () => {
 
       {/* Content */}
       <div className="relative z-10 container mx-auto px-6 text-center animate-fade-in">
-        <div className="max-w-5xl mx-auto space-y-8">
-          <h1 className="text-5xl md:text-7xl font-bold leading-tight">
-            <span className="text-gradient">Maze Solving Using</span>
-            <br />
-            <span className="text-foreground">Recursive Backtracking</span>
-            <br />
-            <span className="text-muted-foreground text-3xl md:text-5xl">in Java 17</span>
+        <div className="max-w-6xl mx-auto space-y-10">
+          <h1 className="text-6xl md:text-8xl font-bold leading-tight tracking-tight">
+            <span className="text-gradient block mb-4">Maze Solving Using</span>
+            <span className="text-foreground block mb-4">Recursive Backtracking</span>
+            <span className="text-muted-foreground text-4xl md:text-6xl block">in Java 17</span>
           </h1>
           
-          <p className="text-xl md:text-2xl text-muted-foreground max-w-3xl mx-auto">
+          <p className="text-2xl md:text-3xl text-muted-foreground max-w-4xl mx-auto leading-relaxed">
             A comprehensive study and implementation of maze solving through 
-            Depth-First Search and Backtracking.
+            <span className="text-accent font-semibold"> Depth-First Search</span> and 
+            <span className="text-lime font-semibold"> Backtracking</span>
           </p>
 
-          <div className="flex gap-4 justify-center items-center pt-8">
+          <div className="flex gap-6 justify-center items-center pt-12">
             <Button 
               size="lg" 
               onClick={scrollToNext}
-              className="bg-accent hover:bg-accent/90 text-accent-foreground font-semibold px-8 py-6 text-lg transition-smooth glow-cyan"
+              className="bg-accent hover:bg-accent/90 text-accent-foreground font-semibold px-10 py-7 text-xl transition-smooth glow-cyan shadow-xl"
             >
               Explore Project
-              <ArrowDown className="ml-2 h-5 w-5" />
+              <ArrowDown className="ml-3 h-6 w-6" />
             </Button>
           </div>
         </div>

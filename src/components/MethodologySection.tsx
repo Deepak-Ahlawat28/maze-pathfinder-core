@@ -52,35 +52,35 @@ export const MethodologySection = () => {
 }`;
 
   return (
-    <section className="py-24 px-6 bg-secondary/30">
-      <div className="container mx-auto max-w-6xl">
-        <div className="text-center mb-16">
-          <h2 className="text-4xl md:text-5xl font-bold mb-4 text-gradient">
+    <section className="py-32 px-6 bg-secondary/30">
+      <div className="container mx-auto max-w-7xl">
+        <div className="text-center mb-20">
+          <h2 className="text-5xl md:text-6xl font-bold mb-6 text-gradient">
             Methodology
           </h2>
-          <div className="w-24 h-1 bg-accent mx-auto" />
+          <div className="w-32 h-1.5 bg-gradient-accent mx-auto rounded-full" />
         </div>
 
-        <div className="grid md:grid-cols-3 gap-6 mb-12">
+        <div className="grid md:grid-cols-3 gap-8 mb-16">
           {steps.map(({ icon: Icon, title, description, color }) => (
             <Card 
               key={title}
-              className="p-6 border-border bg-card/50 backdrop-blur-sm hover:border-accent transition-smooth group"
+              className="p-8 border-border bg-card/50 backdrop-blur-sm hover:border-accent transition-smooth group shadow-lg"
             >
-              <Icon className={`w-10 h-10 mb-4 ${color} group-hover:scale-110 transition-smooth`} />
-              <h3 className="font-semibold text-xl mb-3">{title}</h3>
-              <p className="text-muted-foreground">{description}</p>
+              <Icon className={`w-14 h-14 mb-6 ${color} group-hover:scale-110 transition-smooth`} />
+              <h3 className="font-semibold text-2xl mb-4">{title}</h3>
+              <p className="text-muted-foreground text-lg leading-relaxed">{description}</p>
             </Card>
           ))}
         </div>
 
-        <Card className="p-8 border-border bg-card/50 backdrop-blur-sm overflow-hidden">
-          <h3 className="text-2xl font-semibold mb-6 flex items-center gap-2">
-            <Code2 className="text-accent" />
+        <Card className="p-10 border-border bg-card/50 backdrop-blur-sm overflow-hidden shadow-2xl">
+          <h3 className="text-3xl font-semibold mb-8 flex items-center gap-3">
+            <Code2 className="text-accent w-8 h-8" />
             Implementation Logic
           </h3>
-          <div className="bg-background/80 rounded-lg p-6 overflow-x-auto">
-            <pre className="text-sm md:text-base">
+          <div className="bg-background/80 rounded-xl p-8 overflow-x-auto border border-accent/20">
+            <pre className="text-sm md:text-base leading-relaxed">
               <code className="text-accent">{codeSnippet}</code>
             </pre>
           </div>

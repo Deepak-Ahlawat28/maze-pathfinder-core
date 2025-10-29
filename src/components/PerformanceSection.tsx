@@ -38,17 +38,17 @@ export const PerformanceSection = () => {
   ];
 
   return (
-    <section className="py-24 px-6 bg-secondary/30">
-      <div className="container mx-auto max-w-6xl">
-        <div className="text-center mb-16">
-          <h2 className="text-4xl md:text-5xl font-bold mb-4 text-gradient">
+    <section className="py-32 px-6 bg-secondary/30">
+      <div className="container mx-auto max-w-7xl">
+        <div className="text-center mb-20">
+          <h2 className="text-5xl md:text-6xl font-bold mb-6 text-gradient">
             Performance Analysis
           </h2>
-          <div className="w-24 h-1 bg-accent mx-auto" />
+          <div className="w-32 h-1.5 bg-gradient-accent mx-auto rounded-full" />
         </div>
 
-        <Card className="p-8 border-border bg-card/50 backdrop-blur-sm overflow-hidden">
-          <h3 className="text-2xl font-semibold mb-6 text-center">
+        <Card className="p-10 border-border bg-card/50 backdrop-blur-sm overflow-hidden shadow-2xl">
+          <h3 className="text-3xl font-semibold mb-10 text-center">
             DFS Backtracking vs BFS Comparison
           </h3>
           
